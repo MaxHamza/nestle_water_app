@@ -254,7 +254,7 @@ class _MainListPageState extends State<MainListPage> {
                                   onPressed: () {
                                     var cartBox = Hive.box<CartItem>('cartBox');
                                     var newItem = CartItem(
-                                        quantity: quantities[index],git init
+                                        quantity: quantities[index],
                                         title: state.offer[index].title,description: state.offer[index].description,
                                     index: index,
                                       price: state.offer[index].price
