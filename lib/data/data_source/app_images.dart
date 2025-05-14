@@ -1,8 +1,8 @@
 class AppImages{
   static List<String> onBoardingImages=[
-    'assets/images/img.png',
-    'assets/images/img_1.png',
-    'assets/images/img_2.png'
+    'assets/images/img.jpeg',
+    'assets/images/img_1.jpg',
+    'assets/images/img_2.jpg'
   ];
   static List<List<String>>country=[
     ['assets/images/countries/bahrain.png','bahrain'],

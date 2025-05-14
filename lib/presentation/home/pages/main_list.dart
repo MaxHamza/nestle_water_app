@@ -97,11 +97,13 @@ class _MainListPageState extends State<MainListPage> {
                           padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           child: Column(
                             children: [
-                              Image.asset(
-                                'assets/images/company.jpeg',
-                                height: height * 0.13,
-                                width: width * 0.3,
-                                fit: BoxFit.contain,
+                              ClipRRect(borderRadius: BorderRadius.all(Radius.circular(100)),
+                                child: Image.asset(
+                                  'assets/images/company.jpeg',
+                                  height: height * 0.13,
+                                  width: width * 0.3,
+                                  fit: BoxFit.fill,
+                                ),
                               ),
                               SizedBox(height: height * 0.01),
                               Text(
@@ -145,8 +147,10 @@ class _MainListPageState extends State<MainListPage> {
                 if (state is OffersSuccess) {
                   // تأكدنا أن quantities لها نفس عدد العروض
                   return SizedBox(
-                    height: height * 0.6,
+                    //height: height * 0.6,
                     child: GridView.builder(
+                      shrinkWrap: true,
+                    physics:NeverScrollableScrollPhysics(),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         mainAxisExtent: height * 0.4,
@@ -276,7 +280,7 @@ class _MainListPageState extends State<MainListPage> {
                           ),
                         );
                       },
-                      physics: const BouncingScrollPhysics(),
+                     // physics: const BouncingScrollPhysics(),
                     ),
                   );
                 } else if (state is OffersFailure) {

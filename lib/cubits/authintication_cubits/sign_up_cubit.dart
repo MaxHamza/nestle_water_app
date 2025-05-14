@@ -60,7 +60,10 @@ class SignUpCubit extends Cubit<SignUpState> {
       if (response.statusCode == 200||response.statusCode==201) {
         print('✅ تم إنشاء المستخدم بنجاح');
         final snackBar=SignUpSnack(response:'✅ تم إنشاء المستخدم بنجاح' );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar.snackBar);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('✅ تم تسجيل الدخول بنجاح',),
+          backgroundColor: Colors.green,
+          duration: Duration(seconds: 3),
+        ));
         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> HomePage()),(route) => false,);
       } else {
         print('⚠️ استجابة غير متوقعة: ${response.statusCode}');
