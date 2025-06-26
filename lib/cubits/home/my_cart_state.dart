@@ -1,10 +1,11 @@
 part of 'my_cart_cubit.dart';
 
+class CartState {
+  final List<CartItem> ?cart;
 
-sealed class MyCartState {}
+  CartState({required this.cart});
 
-final class MyCartInitial extends MyCartState {}
-class MyCartLoaded extends MyCartState {
-  final List<CartItem> items;
-  MyCartLoaded(this.items);
+  CartState copyWith({List<CartItem>? cart}) {
+    return CartState(cart: cart ?? this.cart);
+  }
 }

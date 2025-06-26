@@ -125,6 +125,9 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   geolocator:
+  flutter_svg: ^2.2.0
+  collection: ^1.19.1
+  intl: ^0.20.2
 
 dev_dependencies:
   hive_generator: ^2.0.0

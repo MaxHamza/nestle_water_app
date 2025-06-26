@@ -7,6 +7,7 @@ import 'package:nestle_waters_project/cubits/home/home_cubit.dart';
 import 'package:nestle_waters_project/cubits/home/my_cart_cubit.dart';
 import 'package:nestle_waters_project/data/data_source/app_images.dart';
 import 'package:nestle_waters_project/presentation/home/pages/details_page.dart';
+import 'package:nestle_waters_project/presentation/home/pages/new_home.dart';
 import '../../../cubits/home/offer_cubit.dart';
 import '../../../data/models/cart_item.dart';
 
@@ -35,7 +36,7 @@ class _MainListPageState extends State<MainListPage> {
         .height;
 
     return Scaffold(
-      backgroundColor: Color(0xffEEF7FF),
+      backgroundColor:const Color(0xffEEF7FF),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Column(
@@ -87,28 +88,20 @@ class _MainListPageState extends State<MainListPage> {
             ),
             SizedBox(height: height * 0.01),
             Container(
-              height: height * 0.2,
+              height: height * 0.3,
               child: BlocBuilder<HomeCubit, HomeState>(
                 builder: (context, state) {
-                  if (state is CompanySuccess)
+                  if (state is CompanySuccess) {
                     return ListView.builder(
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           child: Column(
                             children: [
-                              ClipRRect(borderRadius: BorderRadius.all(Radius.circular(100)),
-                                child: Image.asset(
-                                  'assets/images/company.jpeg',
-                                  height: height * 0.13,
-                                  width: width * 0.3,
-                                  fit: BoxFit.fill,
-                                ),
-                              ),
-                              SizedBox(height: height * 0.01),
-                              Text(
+                              Cards(
                                 state.companies[index].name,
-                                style: TextStyle(color: primaryColor),
+                                  'assets/images/company.jpeg',
+                                '3 minutes',
                               ),
                             ],
                           ),
@@ -118,9 +111,9 @@ class _MainListPageState extends State<MainListPage> {
                       physics: const BouncingScrollPhysics(),
                       scrollDirection: Axis.horizontal,
                     );
+                  }
                   else if (state is CompanyFailure) {
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(content: Text(state.message)));
+
                     return Container();
                   } else {
                     return Center(
@@ -135,7 +128,7 @@ class _MainListPageState extends State<MainListPage> {
             SizedBox(height: height * 0.02),
             Container(
               width: width,
-              padding: EdgeInsets.only(right: 8),
+              padding:const EdgeInsets.only(right: 8),
               child: Text(
                 'العروض',
                 style: TextStyle(color: primaryColor),
@@ -149,9 +142,9 @@ class _MainListPageState extends State<MainListPage> {
                   return SizedBox(
                     //height: height * 0.6,
                     child: GridView.builder(
-                      shrinkWrap: true,
-                    physics:NeverScrollableScrollPhysics(),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        shrinkWrap: true,
+                        physics:const NeverScrollableScrollPhysics(),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         mainAxisExtent: height * 0.4,
                         crossAxisSpacing: 10,
@@ -203,7 +196,7 @@ class _MainListPageState extends State<MainListPage> {
                                       width: 35,
                                       decoration: BoxDecoration(
                                         color: primaryColor,
-                                        borderRadius: BorderRadius.all(
+                                        borderRadius:const BorderRadius.all(
                                             Radius.circular(12)),
                                       ),
                                       child: TextButton(
@@ -252,28 +245,25 @@ class _MainListPageState extends State<MainListPage> {
                                   height: height * 0.01,
                                 ),
                                 MaterialButton(
-                                  shape: RoundedRectangleBorder(
+                                  shape: const RoundedRectangleBorder(
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(10))),
                                   onPressed: () {
-                                    var cartBox = Hive.box<CartItem>('cartBox');
                                     var newItem = CartItem(
                                         quantity: quantities[index],
                                         title: state.offer[index].title,description: state.offer[index].description,
                                     index: index,
                                       price: state.offer[index].price
                                     );
-                                    cartBox.add(newItem);
-                                    items.add(newItem);
-                                    BlocProvider.of<MyCartCubit>(context).loadCart();
+                                    BlocProvider.of<MyCartCubit>(context).addToCart(newItem,quantity: quantities[index]);
                                   },
                                   color: primaryColor,
-                                  child: Text(
+                                  height: 30,
+                                  minWidth: width,
+                                  child: const Text(
                                     'الاضافة للسلة',
                                     style: TextStyle(color: Colors.white),
                                   ),
-                                  height: 30,
-                                  minWidth: width,
                                 )
                               ],
                             ),

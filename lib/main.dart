@@ -7,6 +7,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:nestle_waters_project/core/constants/app_colors.dart';
 import 'package:nestle_waters_project/cubits/home/my_cart_cubit.dart';
 import 'package:nestle_waters_project/presentation/home/pages/details_page.dart';
+import 'package:nestle_waters_project/presentation/home/pages/new_home.dart';
 import 'package:nestle_waters_project/presentation/onboarding/pages/onboarding_page.dart';
 import 'package:nestle_waters_project/presentation/onboarding/pages/trash.dart';
 import 'package:nestle_waters_project/presentation/splash_pages/splash_screen.dart';

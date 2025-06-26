@@ -17,6 +17,7 @@ class Cart extends StatelessWidget {
   final List<CartItem> items;
   final int index;
   final int quantity;
+
   @override
   Widget build(BuildContext context) {
     var item = items[index];
@@ -24,108 +25,140 @@ class Cart extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: height * 0.005),
-      child: Container(
-        height: height * 0.2,
-        width: width * 0.8,
-        padding: EdgeInsets.symmetric(vertical: height * 0.01),
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(10))),
-        child: Column(
-          children: [
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    width: width * 0.33,
-                    child: Column(
-                      children: [
-                        Text(
-                          'الكمية',
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        Container(
-                          width: width * 0.25,
-                          decoration: BoxDecoration(
-                            border: Border(
-                                left: BorderSide(color: Colors.grey),
-                                right: BorderSide(color: Colors.grey),
-                                top: BorderSide(color: Colors.grey),
-                                bottom: BorderSide(color: Colors.grey)),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
-                            ),
+        padding: EdgeInsets.symmetric(vertical: height * 0.005),
+        child: Container(
+          height: height * 0.25,
+          width: width * 0.8,
+          padding: EdgeInsets.symmetric(vertical: height * 0.01),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(10))),
+          child: Column(
+            children: [
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                      width: width * 0.33,
+                      child: Column(
+                        children: [
+                          Text(
+                            'الكمية',
+                            style: TextStyle(color: Colors.grey),
                           ),
-                          child: Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceEvenly,
-                            children: [
-                              InkWell(onTap: () {}, child: Text('+')),
-                              Text(item.quantity.toString()),
-                              InkWell(
-                                onTap: () {},
-                                child: Text(
-                                  '-',
+                          Container(
+                            width: width * 0.33,
+                            decoration: BoxDecoration(
+                              border: Border(
+                                  left: BorderSide(color: Colors.grey),
+                                  right: BorderSide(color: Colors.grey),
+                                  top: BorderSide(color: Colors.grey),
+                                  bottom: BorderSide(color: Colors.grey)),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                IconButton(
+                                    icon: Icon(Icons.add,
+                                    size: 20,
+                                    ),
+                                    onPressed: (){
+                                      var updatedItem = CartItem(
+                                        index: item.index,
+                                        title: item.title,
+                                        description: item.description,
+                                        price: item.price,
+                                        quantity: item.quantity + 1,
+                                      );
+                                      box.putAt(index, updatedItem); // تحديث الـ Hive
+                                      BlocProvider.of<MyCartCubit>(context).loadCart();
+                                    },),
+                                Text(item.quantity.toString()),
+                                IconButton(
+                                  onPressed: (){  if (item.quantity > 1) {
+                                    if (item.quantity > 1) {
+                                      var updatedItem = CartItem(
+                                        index: item.index,
+                                        title: item.title,
+                                        description: item.description,
+                                        price: item.price,
+                                        quantity: item.quantity - 1,
+                                      );
+                                      box.putAt(index, updatedItem);
+                                      BlocProvider.of<MyCartCubit>(context).loadCart();
+                                    } else {
+                                      box.deleteAt(index); // حذف من الـ Hive
+                                      BlocProvider.of<MyCartCubit>(context).loadCart();
+                                    }
+                                  } else {
+                                    box.deleteAt(index); // حذف من الـ Hive
+                                    BlocProvider.of<MyCartCubit>(context)
+                                        .loadCart();
+                                  }},
+                                  icon:const Icon(Icons.minimize,
+                                  size: 20,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                        Row(
-                          mainAxisAlignment:
-                          MainAxisAlignment.spaceEvenly,
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                showDeleteConfirmation(context, index);
-                              },
-                              child: Text(
-                                'ازالة',
-                                style: TextStyle(color: primaryColor),
-                              ),
-                            ),
-                            SizedBox(
-                              width: width * 0.04,
-                            ),
-                            IconButton(
-                                onPressed: () {
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              InkWell(
+                                onTap: () {
                                   showDeleteConfirmation(context, index);
                                 },
-                                icon: Icon(Icons.delete),
-                                color: primaryColor),
-                          ],
-                        )
-                      ],
+                                child: Text(
+                                  'ازالة',
+                                  style: TextStyle(color: primaryColor),
+                                ),
+                              ),
+                              SizedBox(
+                                width: width * 0.04,
+                              ),
+                              IconButton(
+                                  onPressed: () {
+                                    showDeleteConfirmation(context, index);
+                                  },
+                                  icon: Icon(Icons.delete),
+                                  color: primaryColor),
+                            ],
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                  Container(
+                    SizedBox(width: width*0.01,),
+                    Container(
+                        width: width * 0.33,
+                        child: Text(
+                          item.title,
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                        )),
+                    Image.asset(
+                      'assets/images/zamzam.jpeg',
+                      height: height * 0.09,
                       width: width * 0.33,
-                      child: Text(
-                        item.title,
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                      )),
-                  Image.asset(
-                    'assets/images/zamzam.jpeg',
-                    height: height * 0.09,
-                    width: width * 0.33,
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
-            ),
-            SizedBox(
-              height: height * 0.02,
-            ),
-            Text(
-              '${item.price} ل.س',
-              style:
-              TextStyle(color: primaryColor, fontWeight: FontWeight.bold),
-            ),
-          ],
-        ),
-      ));
+              SizedBox(
+                height: height * 0.02,
+              ),
+              Text(
+                '${item.price*item.quantity} ل.س',
+                style:
+                    TextStyle(color: primaryColor, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+        ));
   }
 }
 
@@ -142,9 +175,9 @@ void showDeleteConfirmation(BuildContext context, int index) {
         ),
         TextButton(
           onPressed: () async {
-             BlocProvider.of<MyCartCubit>(context).delete(index);
-             BlocProvider.of<MyCartCubit>(context).loadCart();
-             Navigator.pop(context);
+            BlocProvider.of<MyCartCubit>(context).delete(index);
+            BlocProvider.of<MyCartCubit>(context).loadCart();
+            Navigator.pop(context);
           },
           child: const Text('حذف', style: TextStyle(color: Colors.red)),
         ),
@@ -152,4 +185,3 @@ void showDeleteConfirmation(BuildContext context, int index) {
     ),
   );
 }
-

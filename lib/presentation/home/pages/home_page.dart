@@ -4,6 +4,8 @@ import 'package:nestle_waters_project/presentation/home/pages/main_list.dart';
 import 'package:nestle_waters_project/presentation/home/pages/mycart.dart';
 import 'package:nestle_waters_project/presentation/home/pages/orders.dart';
 import 'package:nestle_waters_project/presentation/home/pages/profile.dart';
+
+import 'new_home.dart';
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -18,7 +20,7 @@ class HomePageState extends State<HomePage> {
     Profile(),
     MyCart(),
     Orders(),
-    MainListPage(),
+    NewHome(),
   ];
 
   @override
@@ -27,9 +29,8 @@ class HomePageState extends State<HomePage> {
       backgroundColor: primaryColor,
       body: pages[currentIndex],
       bottomNavigationBar: ClipRRect(
-          borderRadius: BorderRadius.only(topLeft:Radius.circular(20) ,topRight: Radius.circular(20)),
         child: BottomNavigationBar(
-          backgroundColor: Colors.white	,
+          backgroundColor: Color(0xffF5F7F8)	,
           type: BottomNavigationBarType.fixed,
           currentIndex: currentIndex,
           onTap: (index) {
@@ -58,7 +59,6 @@ class HomePageState extends State<HomePage> {
               icon: Icon(Icons.home),
               label: 'الرئيسية',
             ),
-
           ],
         ),
       ),
