@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
+import 'package:nestle_waters_project/presentation/home/pages/company_view.dart';
 import 'package:nestle_waters_project/presentation/home/pages/mycart.dart';
 
 import '../../../core/constants/app_colors.dart';
@@ -11,6 +12,7 @@ import '../../../cubits/home/my_cart_cubit.dart';
 import '../../../cubits/home/offer_cubit.dart';
 import '../../../data/data_source/app_images.dart';
 import '../../../data/models/cart_item.dart';
+import '../../../data/models/offers.dart';
 import 'details_page.dart';
 
 class NewHome extends StatefulWidget {
@@ -38,9 +40,11 @@ class _NewHomeState extends State<NewHome> {
                 TopBar(),
                 SearchInput(),
                 PromoCard(),
-                SizedBox(height: MediaQuery.of(context).size.height*0.01,),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.01,
+                ),
                 Headline(),
-                CardListView(),
+                MyCompanies(),
                 SHeadline(),
                 BestOffers(),
               ],
@@ -250,8 +254,8 @@ class SHeadline extends StatelessWidget {
   }
 }
 
-class CardListView extends StatelessWidget {
-  const CardListView({Key? key}) : super(key: key);
+class MyCompanies extends StatelessWidget {
+  const MyCompanies({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -264,16 +268,27 @@ class CardListView extends StatelessWidget {
             if (state is CompanySuccess) {
               return ListView.builder(
                 itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Column(
-                      children: [
-                        Cards(
-                          state.companies[index].name,
-                          'assets/images/company.jpeg',
-                          '3 minutes',
-                        ),
-                      ],
+
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CompanyView(
+                                    companyName: state.companies[index].name,
+                                  )));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Column(
+                        children: [
+                          Cards(
+                            state.companies[index].name,
+                            'assets/images/company.jpeg',
+                            '3 minutes',
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 },
@@ -447,19 +462,19 @@ class _BestOffersState extends State<BestOffers> {
                                 ),
                               ),
                             ),
-                            Spacer(),
+                           const Spacer(),
                             Text(
                               quantities[index].toString(),
                               style: TextStyle(color: primaryColor),
                             ),
-                            Spacer(),
+                           const Spacer(),
                             Container(
                               height: 35,
                               width: 35,
                               decoration: BoxDecoration(
                                 color: primaryColor,
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(12)),
+                                   const BorderRadius.all(Radius.circular(12)),
                               ),
                               child: TextButton(
                                 onPressed: () {
@@ -480,17 +495,22 @@ class _BestOffersState extends State<BestOffers> {
                         ),
                         MaterialButton(
                           shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(10))),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
                           onPressed: () {
                             var newItem = CartItem(
                                 quantity: quantities[index],
-                                title: state.offer[index].title,description: state.offer[index].description,
+                                title: state.offer[index].title,
+                                description: state.offer[index].description,
                                 index: index,
-                                price: state.offer[index].price
-                            );
-                            BlocProvider.of<MyCartCubit>(context).addToCart(newItem,quantity: quantities[index]);
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>MyCart()));
+                                price: state.offer[index].price);
+                            BlocProvider.of<MyCartCubit>(context).addToCart(
+                                newItem,
+                                quantity: quantities[index]);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MyCart()));
                           },
                           color: primaryColor,
                           height: 30,
